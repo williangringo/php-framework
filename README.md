@@ -1,4 +1,4 @@
-php-framework
+PHP Framework
 =============
 
-PHP Framework
+Custom PHP Framework
