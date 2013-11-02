@@ -7,6 +7,8 @@ define('APP_ID', 'myapp');
 define('APP_ENV', getenv('APP_ENV')? : 'development');
 define('APP_DIR', strtr(__DIR__, '\\', '/'));
 define('HTMLPURIFIER_PREFIX', APP_DIR . '/lib');
+define('ESSENCE_LIB', APP_DIR . '/lib/Essence/');
+define('ESSENCE_DEFAULT_PROVIDERS', ESSENCE_LIB . 'providers.php');
 $tmp = strtr(sys_get_temp_dir(), '\\', '/');
 $lib = APP_DIR . '/lib';
 
@@ -23,6 +25,7 @@ ini_set('allow_url_include', 0);
 ini_set('log_errors', 1);
 ini_set('error_log', 'syslog');
 ini_set('log_errors_max_len', 0);
+ignore_user_abort(true);
 
 
 //------------------------------------------------------------------------------------------------------
@@ -46,6 +49,7 @@ $loader->registerNamespaces([
     'CalendR'           => $lib,
     'Carbon'            => $lib,
     'Enum'              => $lib,
+    'Essence'           => $lib . '/Essence',
     'emberlabs'         => $lib,
     'Faker'             => $lib,
     'Geocoder'          => $lib,

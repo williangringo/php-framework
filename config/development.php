@@ -44,10 +44,16 @@ return [
     'log'     => [
         'level' => Monolog\Logger::DEBUG
     ],
+    'mongo'   => [
+        'dsn' => 'mongodb://localhost:27017/test'
+    ],
     'session' => [
         'options' => [
             'name' => 'APPSID'
         ]
+    ],
+    'trans'   => [
+        'default' => 'pt_BR'
     ],
     'twig'    => [
         'options' => [

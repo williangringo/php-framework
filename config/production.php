@@ -44,6 +44,9 @@ return [
     'log'     => [
         'level' => Monolog\Logger::ERROR
     ],
+    'mongo'   => [
+        'dsn' => 'mongodb://localhost:27017/test'
+    ],
     'session' => [
         'options' => [
             'name' => 'APPSID'

@@ -18,9 +18,11 @@ function container() {
 // Container application parameters
 //------------------------------------------------------------------------------------------------------
 $container->params['app'] = [
-    'env' => APP_ENV,
-    'dir' => APP_DIR,
-    'tmp' => $tmp
+    'id'     => APP_ID,
+    'env'    => APP_ENV,
+    'dir'    => APP_DIR,
+    'tmp'    => $tmp,
+    'locale' => ''
 ];
 
 //------------------------------------------------------------------------------------------------------
@@ -134,6 +136,15 @@ $container->set('mobile', function() use ($container) {
 });
 
 //------------------------------------------------------------------------------------------------------
+// MongoDB service
+// Instance of: \MongoQB\Builder
+// Docs: https://github.com/alexbilbie/MongoQB
+//------------------------------------------------------------------------------------------------------
+$container->set('mongo', function() use ($container) {
+    return new \MongoQB\Builder($container->get('config')['mongo']);
+});
+
+//------------------------------------------------------------------------------------------------------
 // Purifier service
 // Instance of: HTMLPurifier
 // Docs: http://htmlpurifier.org/
@@ -182,6 +193,20 @@ $container->set('session', function() use ($container) {
     $handler = new \Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandler();
     $storage = new \Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage($config['options'], $handler);
     return new \Symfony\Component\HttpFoundation\Session\Session($storage);
+});
+
+//------------------------------------------------------------------------------------------------------
+// Translator service
+// Instance of: \Symfony\Component\Translation\Translator
+// Docs: http://symfony.com/doc/master/book/translation.html
+//------------------------------------------------------------------------------------------------------
+$container->set('trans', function() use ($container) {
+    $locale   = $container->params['app']['locale']? : $container->get('config')['trans']['default'];
+    $selector = new \Symfony\Component\Translation\MessageSelector();
+    $trans    = new \Symfony\Component\Translation\Translator($locale, $selector);
+    $trans->setFallbackLocales([explode('_', $locale)[0]]);
+    $trans->addLoader('array', new \Symfony\Component\Translation\Loader\ArrayLoader());
+    return $trans;
 });
 
 //------------------------------------------------------------------------------------------------------

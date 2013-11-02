@@ -11,9 +11,11 @@ namespace App;
  * @property \Mobile_Detect $mobile
  * @property \HTMLPurifier $purifier
  * @property \Twig_Environment $twig 
+ * @property \MongoQB\Builder $mongo
  * @property \Aura\Router\Map $router
  * @property \Aura\Di\Container $container
  * @property \Illuminate\Database\Capsule\Manager $db
+ * @property \Symfony\Component\Translation\Translator $trans
  * @property \Symfony\Component\HttpFoundation\Request $request
  * @property \Symfony\Component\HttpFoundation\Session\Session $session 
  * @property \Symfony\Component\EventDispatcher\EventDispatcher $events
