@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="App" default="help">
+
+    <!-- ============================================  -->
+    <!-- Target: help                                  -->
+    <!-- ============================================  -->
+    <target name="help" hidden="true">
+        <exec command="phing.bat -list" dir="${application.startdir}" passthru="true" />
+    </target> 
+
+</project>

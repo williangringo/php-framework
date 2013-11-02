@@ -25,6 +25,179 @@ $container->params['app'] = [
     'locale' => ''
 ];
 
+/**
+ * Aura\View\Helper\DateTime
+ */
+$container->params['Aura\View\Helper\Datetime']['format'] = [
+    'date'     => 'Y-m-d H:i:s',
+    'time'     => 'H:i:s',
+    'datetime' => 'Y-m-d H:i:s',
+    'default'  => 'Y-m-d H:i:s',
+];
+
+/**
+ * Aura\View\Helper\Escape
+ */
+$container->params['Aura\View\Helper\Escape'] = [
+    'escaper_factory' => $container->lazyNew('Aura\View\EscaperFactory'),
+];
+
+/**
+ * Aura\View\Helper\Form\Field
+ */
+$container->params['Aura\View\Helper\Form\Field']['registry'] = [
+    'button'         => $container->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'checkbox'       => $container->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'color'          => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'date'           => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime'       => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime-local' => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'email'          => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'file'           => $container->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'hidden'         => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'image'          => $container->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'month'          => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'number'         => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'password'       => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'radio'          => $container->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'range'          => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'reset'          => $container->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'search'         => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'submit'         => $container->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'tel'            => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'text'           => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'time'           => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'url'            => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'week'           => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'radios'         => $container->lazyNew('Aura\View\Helper\Form\Radios'),
+    'checkboxes'     => $container->lazyNew('Aura\View\Helper\Form\Checkboxes'),
+    'select'         => $container->lazyNew('Aura\View\Helper\Form\Select'),
+    'textarea'       => $container->lazyNew('Aura\View\Helper\Form\Textarea'),
+    'repeat'         => $container->lazyNew('Aura\View\Helper\Form\Repeat'),
+];
+
+/**
+ * Aura\View\Helper\Form\Input
+ */
+$container->params['Aura\View\Helper\Form\Input']['registry'] = [
+    'button'         => $container->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'checkbox'       => $container->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'color'          => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'date'           => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime'       => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime-local' => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'email'          => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'file'           => $container->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'hidden'         => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'image'          => $container->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'month'          => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'number'         => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'password'       => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'radio'          => $container->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'range'          => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'reset'          => $container->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'search'         => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'submit'         => $container->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'tel'            => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'text'           => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'time'           => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'url'            => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'week'           => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+];
+
+/**
+ * Aura\View\Helper\Repeat
+ */
+$container->params['Aura\View\Helper\Form\Repeat']['registry'] = [
+    'button'         => $container->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'checkbox'       => $container->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'color'          => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'date'           => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime'       => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'datetime-local' => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'email'          => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'file'           => $container->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'hidden'         => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'image'          => $container->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'month'          => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'number'         => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'password'       => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'radio'          => $container->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+    'range'          => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'reset'          => $container->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'search'         => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'submit'         => $container->lazyNew('Aura\View\Helper\Form\Input\Generic'),
+    'tel'            => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'text'           => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'time'           => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'url'            => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'week'           => $container->lazyNew('Aura\View\Helper\Form\Input\Value'),
+    'radios'         => $container->lazyNew('Aura\View\Helper\Form\Radios'),
+    'checkboxes'     => $container->lazyNew('Aura\View\Helper\Form\Checkboxes'),
+    'select'         => $container->lazyNew('Aura\View\Helper\Form\Select'),
+    'textarea'       => $container->lazyNew('Aura\View\Helper\Form\Textarea'),
+];
+
+/**
+ * Aura\View\Helper\Radios
+ */
+$container->params['Aura\View\Helper\Form\Radios'] = [
+    'input' => $container->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+];
+
+/**
+ * Aura\View\Helper\Checkboxes
+ */
+$container->params['Aura\View\Helper\Form\Checkboxes'] = [
+    'input' => $container->lazyNew('Aura\View\Helper\Form\Input\Checked'),
+];
+
+/**
+ * Aura\View\HelperLocator
+ */
+$container->params['Aura\View\HelperLocator']['registry'] = [
+    'anchor'      => $container->lazyNew('Aura\View\Helper\Anchor'),
+    'attribs'     => $container->lazyNew('Aura\View\Helper\Attribs'),
+    'base'        => $container->lazyNew('Aura\View\Helper\Base'),
+    'datetime'    => $container->lazyNew('Aura\View\Helper\Datetime'),
+    'escape'      => $container->lazyNew('Aura\View\Helper\Escape'),
+    'field'       => $container->lazyNew('Aura\View\Helper\Form\Field'),
+    'image'       => $container->lazyNew('Aura\View\Helper\Image'),
+    'input'       => $container->lazyNew('Aura\View\Helper\Form\Input'),
+    'links'       => $container->lazyNew('Aura\View\Helper\Links'),
+    'metas'       => $container->lazyNew('Aura\View\Helper\Metas'),
+    'ol'          => $container->lazyNew('Aura\View\Helper\Ol'),
+    'radios'      => $container->lazyNew('Aura\View\Helper\Form\Radios'),
+    'checkboxes'  => $container->lazyNew('Aura\View\Helper\Form\Checkboxes'),
+    'repeat'      => $container->lazyNew('Aura\View\Helper\Form\Repeat'),
+    'scripts'     => $container->lazyNew('Aura\View\Helper\Scripts'),
+    'scriptsFoot' => $container->lazyNew('Aura\View\Helper\Scripts'),
+    'select'      => $container->lazyNew('Aura\View\Helper\Form\Select'),
+    'styles'      => $container->lazyNew('Aura\View\Helper\Styles'),
+    'tag'         => $container->lazyNew('Aura\View\Helper\Tag'),
+    'title'       => $container->lazyNew('Aura\View\Helper\Title'),
+    'textarea'    => $container->lazyNew('Aura\View\Helper\Form\Textarea'),
+    'ul'          => $container->lazyNew('Aura\View\Helper\Ul'),
+];
+
+/**
+ * Aura\View\Template
+ */
+$container->params['Aura\View\Template'] = [
+    'escaper_factory' => $container->lazyNew('Aura\View\EscaperFactory'),
+    'helper_locator'  => $container->lazyNew('Aura\View\HelperLocator'),
+    'template_finder' => $container->lazyNew('Aura\View\TemplateFinder'),
+];
+
+/**
+ * Aura\View\TwoStep
+ */
+$container->params['Aura\View\TwoStep'] = [
+    'template'     => $container->lazyNew('Aura\View\Template'),
+    'format_types' => $container->lazyNew('Aura\View\FormatTypes'),
+];
+
+
 //------------------------------------------------------------------------------------------------------
 // Cache service
 // Instance of: \Stash\Pool

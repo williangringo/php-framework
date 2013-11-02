@@ -1,0 +1,1 @@
+php "%~dp0phing.phar" -p phing-props.properties -f phing-build.xml %*
