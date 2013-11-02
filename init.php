@@ -34,7 +34,7 @@ include $lib . '/Symfony/Component/ClassLoader/UniversalClassLoader.php';
 include $lib . '/Symfony/Component/ClassLoader/ApcUniversalClassLoader.php';
 
 if (extension_loaded('apc') && APP_ENV !== 'development') {
-    $loader = new \Symfony\Component\ClassLoader\UniversalClassLoader();
+    $loader = new \Symfony\Component\ClassLoader\ApcUniversalClassLoader(APP_ID);
 } else {
     $loader = new \Symfony\Component\ClassLoader\UniversalClassLoader();
 }
@@ -43,7 +43,9 @@ $loader->registerNamespaces([
     'App'               => $lib,
     'Aura'              => $lib,
     'Browser'           => $lib,
+    'CalendR'           => $lib,
     'Carbon'            => $lib,
+    'Enum'              => $lib,
     'emberlabs'         => $lib,
     'Faker'             => $lib,
     'Geocoder'          => $lib,
@@ -52,13 +54,18 @@ $loader->registerNamespaces([
     'Hashids'           => $lib,
     'Illuminate'        => $lib,
     'Imagine'           => $lib,
+    'IsoCodes'          => $lib,
     'Knp'               => $lib,
+    'Michelf'           => $lib,
+    'MongoQB'           => $lib,
     'Monolog'           => $lib,
     'Moontoast'         => $lib,
     'Mremi'             => $lib,
     'Multiplayer'       => $lib,
     'Negotiation'       => $lib,
     'Nocarrier'         => $lib,
+    'OAuth'             => $lib,
+    'OAuth2'            => $lib,
     'Pagerfanta'        => $lib,
     'PasswordLib'       => $lib,
     'PhpAmqpLib'        => $lib,
@@ -71,6 +78,7 @@ $loader->registerNamespaces([
     'Symfony'           => $lib,
     'Underscore'        => $lib,
     'Upload'            => $lib,
+    'utilphp'           => $lib,
     'Whoops'            => $lib
 ]);
 
