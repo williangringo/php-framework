@@ -1,0 +1,1 @@
+php "%~dp0doctrine-migrations.phar" %*

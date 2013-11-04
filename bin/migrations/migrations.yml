@@ -1,0 +1,4 @@
+name: Migrations
+migrations_namespace: DoctrineMigrations
+table_name: _versions
+migrations_directory: ../../migrations/DoctrineMigrations

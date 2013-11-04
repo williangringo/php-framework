@@ -31,8 +31,19 @@ ignore_user_abort(true);
 //------------------------------------------------------------------------------------------------------
 // Autoload configuration
 //------------------------------------------------------------------------------------------------------
-ini_set('open_basedir', implode(PATH_SEPARATOR, [APP_DIR, $tmp]));
+if (php_sapi_name() !== 'cli') {
+    ini_set('open_basedir', implode(PATH_SEPARATOR, [APP_DIR, $tmp]));
+}
+
 set_include_path(implode(PATH_SEPARATOR, [APP_DIR . '/app/src', $lib, APP_DIR]));
+
+// if any lib is installed using Composer, we include the Composer autoloader
+$composer = APP_DIR . '/vendor/autoload.php';
+
+if (file_exists($composer)) {
+    include $composer;
+}
+
 include $lib . '/Symfony/Component/ClassLoader/UniversalClassLoader.php';
 include $lib . '/Symfony/Component/ClassLoader/ApcUniversalClassLoader.php';
 
