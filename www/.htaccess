@@ -139,8 +139,11 @@ SetEnv APP_ENV development
     Options -MultiViews -Indexes +FollowSymlinks
     RewriteEngine On
 
+    RewriteRule ^(.*\.(?:jpg|png|gif|jpeg))$ munee.php?files=/$1 [L,QSA,NC]
+
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
+
     RewriteRule ^ index.php [L]
 </IfModule>
 
