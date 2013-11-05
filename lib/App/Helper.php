@@ -24,4 +24,16 @@ class Helper {
         return $this->container->router->generate($name, $params);
     }
 
+    public function displayPrefix() {
+        $m = $this->container->mobile;
+
+        if ($m->isTablet()) {
+            return 't.';
+        } elseif ($m->isMobile() && !$m->isTablet()) {
+            return 'm.';
+        } else {
+            return '';
+        }
+    }
+
 }

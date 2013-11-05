@@ -53,12 +53,18 @@ class Controller {
     }
 
     public function redirect($url, $status = 302) {
-        return new RedirectResponse($url, $status);
+        $response = new RedirectResponse($url, $status);
+        $response->setCharset('UTF-8');
+        return $response;
     }
 
     public function view($file, $out = null, $merge = false) {
-        $context = is_array($out) ? $merge ? array_merge($this->out, $out) : $out  : $this->out;
-        return $this->container->twig->render($file, $context);
+        $context    = is_array($out) ? $merge ? array_merge($this->out, $out) : $out  : $this->out;
+        $prefix     = $this->container->helper->displayPrefix();
+        $file       = explode('/', $file);
+        $pos        = count($file) - 1;
+        $file[$pos] = $prefix . $file[$pos];
+        return $this->container->twig->render(implode('/', $file), $context);
     }
 
     public function out($name, $value = null) {

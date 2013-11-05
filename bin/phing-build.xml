@@ -8,5 +8,246 @@
     <target name="help" hidden="true">
         <exec command="phing.bat -list" dir="${application.startdir}" passthru="true" />
     </target> 
+    
+    
+    <!-- ============================================  -->
+    <!-- Target: clean                                 -->
+    <!-- ============================================  -->
+    <target name="clean">
+        <echo msg="Removing directory 'build'" />
+        <delete dir="${app.dir}\build" includeemptydirs="true" quiet="true" />
+        
+        <echo msg="Removing directory 'dist'" />
+        <delete dir="${app.dir}\dist" includeemptydirs="true" quiet="true" />
+    </target>
+    
+    
+    <!-- ============================================  -->
+    <!-- Target: prepare                               -->
+    <!-- ============================================  -->
+    <target name="prepare" depends="clean" hidden="true">
+        <echo msg="Making directory 'build'" />
+        <mkdir dir="${app.dir}\build" />
+        
+        <echo msg="Making directory 'dist'" />
+        <mkdir dir="${app.dir}\dist" />
+    </target>    
+    
+    
+    <!-- ============================================  -->
+    <!-- Target: build                                 -->
+    <!-- ============================================  -->
+    <target name="build" depends="prepare,php-lint" hidden="true">
+        <echo msg="Copying files to build directory..." />
+
+        <copy todir="${app.dir}\build" >
+            <fileset dir="${app.dir}\">
+                <include name="app/**" />
+                <include name="config/**" />
+                <include name="lib/**" />
+                <include name="scripts/**" />
+                <include name="www/**" />
+                <include name="container.php" />
+                <include name="init.php" />
+            </fileset>
+        </copy>
+
+        <delete dir="${app.dir}\build\lib\Faker" includeemptydirs="true" verbose="false" failonerror="false" />
+    </target>
+    
+    
+    <!-- ============================================  -->
+    <!-- Target: dist-staging                          --> 
+    <!-- ============================================  -->
+    <target name="dist-staging" depends="build">
+        <echo msg="Creating dir dist-staging..." />
+        <mkdir dir="${app.dir}\dist\staging" />
+        <mkdir dir="${app.dir}\dist\staging\files" />
+        <mkdir dir="${app.dir}\dist\staging\deploy" />
+        
+        <copy todir="${app.dir}\dist\staging\files" >
+            <!-- If you use RewriteBase, uncomment below -->
+            <!--            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="RewriteBase" replace="# RewriteBase" ignoreCase="false"/>
+                </replaceregexp>
+            </filterchain>-->
+            
+            <fileset dir="${app.dir}\build">
+                <include name="app/**" />
+                <include name="config/**" />
+                <include name="lib/**" />
+                <include name="scripts/**" />
+                <include name="www/**" />
+                <include name="container.php" />
+                <include name="init.php" />
+            </fileset>
+        </copy>
+        
+        <zip destfile="${app.dir}\dist\staging\deploy\dist-staging.zip" includeemptydirs="true">
+            <fileset dir="${app.dir}\dist\staging\files">
+                <include name="app/**" />
+                <include name="config/**" />
+                <include name="lib/**" />
+                <include name="scripts/**" />
+                <include name="www/**" />
+                <include name="container.php" />
+                <include name="init.php" />
+            </fileset>
+        </zip>
+        
+    </target>
+    
+    
+    <!-- ============================================  -->
+    <!-- Target: deploy-staging                        --> 
+    <!-- ============================================  -->
+    <target name="deploy-staging">
+        <tstamp>
+            <format property="app.deploy.ts" pattern="%Y%m%d%H%M%S"/>
+        </tstamp>
+        
+        <echo msg="Copying files to '${app.staging.host}:${app.staging.path}/${app.deploy.ts}'" />
+        
+        <ssh 
+            port="${app.staging.port}"
+            username="${app.staging.user}"
+            host="${app.staging.host}"
+            pubkeyfile="${app.staging.pub_key}" 
+            privkeyfile="${app.staging.pvt_key}" 
+            command="cd ${app.staging.path}; mkdir ${app.deploy.ts}" />
+        
+        <scp 
+            port="${app.staging.port}"
+            username="${app.staging.user}"
+            host="${app.staging.host}"
+            pubkeyfile="${app.staging.pub_key}" 
+            privkeyfile="${app.staging.pvt_key}" 
+            todir="${app.staging.path}/${app.deploy.ts}"
+        >
+            <fileset dir="${app.dir}\dist\staging\deploy">
+                <include name="dist-staging.zip" />
+            </fileset>
+            
+            <fileset dir="${app.dir}\bin">
+                <include name="staging.sh" />
+            </fileset>
+        </scp>
+        
+        <ssh 
+            port="${app.staging.port}"
+            username="${app.staging.user}"
+            host="${app.staging.host}"
+            pubkeyfile="${app.staging.pub_key}" 
+            privkeyfile="${app.staging.pvt_key}" 
+            command="cd ${app.staging.path}/${app.deploy.ts}; chmod +x staging.sh; /bin/bash staging.sh" />
+        
+        <echo msg="Deploy for STAGING finished" />
+    </target>
+    
+    
+    <!-- ============================================  -->
+    <!-- Target: dist-production                       --> 
+    <!-- ============================================  -->
+    <target name="dist-production" depends="build">
+        <echo msg="Creating dir dist-production..." />
+        <mkdir dir="${app.dir}\dist\production" />
+        <mkdir dir="${app.dir}\dist\production\files" />
+        <mkdir dir="${app.dir}\dist\production\deploy" />
+        
+        <copy todir="${app.dir}\dist\production\files" >
+            <!-- If you use RewriteBase, uncomment below -->
+            <!--            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="RewriteBase" replace="# RewriteBase" ignoreCase="false"/>
+                </replaceregexp>
+            </filterchain>-->
+            
+            <fileset dir="${app.dir}\build">
+                <include name="app/**" />
+                <include name="config/**" />
+                <include name="lib/**" />
+                <include name="scripts/**" />
+                <include name="www/**" />
+                <include name="container.php" />
+                <include name="init.php" />
+            </fileset>
+        </copy>
+        
+        <zip destfile="${app.dir}\dist\production\deploy\dist-production.zip" includeemptydirs="true">
+            <fileset dir="${app.dir}\dist\production\files">
+                <include name="app/**" />
+                <include name="config/**" />
+                <include name="lib/**" />
+                <include name="scripts/**" />
+                <include name="www/**" />
+                <include name="container.php" />
+                <include name="init.php" />
+            </fileset>
+        </zip>
+        
+    </target>
+    
+    
+    <!-- ============================================  -->
+    <!-- Target: deploy-production                     --> 
+    <!-- ============================================  -->
+    <target name="deploy-production">
+        <tstamp>
+            <format property="app.deploy.ts" pattern="%Y%m%d%H%M%S"/>
+        </tstamp>
+        
+        <echo msg="Copying files to '${app.production.host}:${app.production.path}/${app.deploy.ts}'" />
+        
+        <ssh 
+            port="${app.production.port}"
+            username="${app.production.user}"
+            host="${app.production.host}"
+            pubkeyfile="${app.production.pub_key}" 
+            privkeyfile="${app.production.pvt_key}" 
+            command="cd ${app.production.path}; mkdir ${app.deploy.ts}" />
+        
+        <scp 
+            port="${app.production.port}"
+            username="${app.production.user}"
+            host="${app.production.host}"
+            pubkeyfile="${app.production.pub_key}" 
+            privkeyfile="${app.production.pvt_key}" 
+            todir="${app.production.path}/${app.deploy.ts}"
+        >
+            <fileset dir="${app.dir}\dist\production\deploy">
+                <include name="dist-production.zip" />
+            </fileset>
+            
+            <fileset dir="${app.dir}\bin">
+                <include name="production.sh" />
+            </fileset>
+        </scp>
+        
+        <ssh 
+            port="${app.production.port}"
+            username="${app.production.user}"
+            host="${app.production.host}"
+            pubkeyfile="${app.production.pub_key}" 
+            privkeyfile="${app.production.pvt_key}" 
+            command="cd ${app.production.path}/${app.deploy.ts}; chmod +x production.sh; /bin/bash production.sh" />
+        
+        <echo msg="Deploy for PRODUCTION finished" />
+    </target>
+    
+    
+    
+    <!-- ============================================  -->
+    <!-- Target: php-lint                              --> 
+    <!-- ============================================  -->    
+    <target name="php-lint">
+        <echo msg="Checking PHP source code..." />
+        
+        <phplint haltonfailure="true">
+            <fileset dir="${app.dir}\">
+                <include name="app/*.php"/>
+            </fileset>
+        </phplint>
+    </target>
 
 </project>
