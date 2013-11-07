@@ -61,7 +61,12 @@ class Kernel {
             $c = s::create($c)->upperCamelize()->str;
             $a = s::create($a)->camelize()->str;
 
-            $class = sprintf('\%s\%s\%sController', $m, $c, $c);
+            if (isset($route->values['cpanel'])) {
+                $cp    = s::create($route->values['cpanel'])->upperCamelize()->str;
+                $class = sprintf('\%s\%s\%s\%sController', $m, $c, $cp, $c);
+            } else {
+                $class = sprintf('\%s\%s\%sController', $m, $c, $c);
+            }
 
             if ($this->container->loader->findFile($class) === null) {
                 $this->container->log->addError("Controller {$class} not found");
