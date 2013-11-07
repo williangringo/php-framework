@@ -8,8 +8,11 @@ if (!file_exists($temp)) {
 
 return [
     'app'     => [
-        'id'   => APP_ID,
-        'temp' => $temp
+        'id'      => APP_ID,
+        'temp'    => $temp,
+        'cpanels' => ['admin'],
+        // Generate a new salt at: https://www.grc.com/passwords.htm
+        'salt'    => 'oChmYEsPJM2FB6sdRhWKcyot49uxpzrAkmXxt5dhiufmtGr0Oo5jhA9Sl7gAm9F'
     ],
     'cache'   => [
         'apc'      => [

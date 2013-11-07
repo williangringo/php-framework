@@ -11,7 +11,7 @@ $router = container()->get('router');
 // Define your custom routes here!
 //------------------------------------------------------------------------------------------------------
 
-
+$router;
 
 //------------------------------------------------------------------------------------------------------
 // Asset route (for URL generation only)
@@ -20,6 +20,59 @@ $router->add('asset', '/assets/{:f}', [
     'method'   => ['GET'],
     'routable' => false
 ]);
+
+//------------------------------------------------------------------------------------------------------
+// Adding a route group for each Control Panel defined in the config file
+//------------------------------------------------------------------------------------------------------
+$cpanels = container()->get('config')['app']['cpanels'];
+
+foreach ($cpanels as $cpanel) {
+    $router->attach('/' . $cpanel, [
+        'params' => [
+            'm'  => '([a-zA-Z0-9\-_]+)',
+            'c'  => '([a-zA-Z0-9\-_]+)',
+            'a'  => '([a-zA-Z0-9\-_]+)',
+            'id' => '([a-zA-Z0-9\-_]+)'
+        ],
+        'method' => ['GET', 'POST'],
+        'routes' => [
+            $cpanel . '_m'     => [
+                'path'   => '/{:m}',
+                'values' => [
+                    'cpanel' => $cpanel,
+                    'm'      => 'base'
+                ]
+            ],
+            $cpanel . '_mc'    => [
+                'path'   => '/{:m}/{:c}',
+                'values' => [
+                    'cpanel' => $cpanel,
+                    'm'      => 'base',
+                    'c'      => 'index'
+                ]
+            ],
+            $cpanel . '_mca'   => [
+                'path'   => '/{:m}/{:c}/{:a}',
+                'values' => [
+                    'cpanel' => $cpanel,
+                    'm'      => 'base',
+                    'c'      => 'index',
+                    'a'      => 'index'
+                ]
+            ],
+            $cpanel . '_mcaid' => [
+                'path'   => '/{:m}/{:c}/{:a}/{:id}',
+                'values' => [
+                    'cpanel' => $cpanel,
+                    'm'      => 'base',
+                    'c'      => 'index',
+                    'a'      => 'index',
+                    'id'     => -1
+                ]
+            ]
+        ]
+    ]);
+}
 
 //------------------------------------------------------------------------------------------------------
 // Module route

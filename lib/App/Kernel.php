@@ -23,10 +23,21 @@ class Kernel {
         $this->container = $container;
     }
 
+    /**
+     * Dispatch the request
+     * @throws NotFound
+     * @throws InvalidResponse
+     */
     public function dispatch() {
         try {
-            $this->container->events->dispatch('kernel.always');
+            register_shutdown_function(function() {
+                container()->get('events')->dispatch('kernel.end');
+            });
+
+            $this->loadEvents();
             $this->loadRoutes();
+
+            $this->container->events->dispatch('kernel.always');
 
             $path   = $this->container->request->getPathInfo();
             $server = $this->container->request->server->all();
@@ -36,6 +47,8 @@ class Kernel {
                 $this->container->log->addError("Route {$path} not found");
                 throw new NotFound('Not found');
             }
+
+            container()->params['app']['route'] = $route;
 
             $evtKr = new KernelRoute($route);
             $this->container->events->dispatch('kernel.route', $evtKr);
@@ -80,10 +93,14 @@ class Kernel {
         } catch (NotFound $ex) {
             $this->handleNotFound($ex);
         } catch (\Exception $ex) {
-            $this->handleException($ex, 500);
+            $this->handleError($ex);
         }
     }
 
+    /**
+     * Load the routes file
+     * @return void
+     */
     protected function loadRoutes() {
         if (APP_ENV === 'development') {
             include APP_DIR . '/app/routes.php';
@@ -103,6 +120,11 @@ class Kernel {
         }
     }
 
+    /**
+     * Handle a 404 error
+     * @param \Exception $e
+     * @return void
+     */
     protected function handleNotFound(\Exception $e) {
         if ($this->container->container->has('error404')) {
             $fn = $this->container->container->get('error404');
@@ -112,6 +134,11 @@ class Kernel {
         $this->handleException($e, 404);
     }
 
+    /**
+     * Handle a 500 error
+     * @param \Exception $e
+     * @return void
+     */
     protected function handleError(\Exception $e) {
         if ($this->container->container->has('error500')) {
             $fn = $this->container->container->get('error500');
@@ -121,7 +148,14 @@ class Kernel {
         $this->handleException($e, 500);
     }
 
+    /**
+     * Handle an exception
+     * @param \Exception $e
+     * @param int $status
+     * @return void
+     */
     protected function handleException(\Exception $e, $status = 200) {
+        $this->container->log->addError($e->getMessage());
         $fmt = strtolower($this->container->request->getAcceptableContentTypes()[0]);
 
         if ($this->container->request->isXmlHttpRequest()) {
@@ -139,6 +173,13 @@ class Kernel {
         }
 
         return (new Response($e->getMessage(), $status))->send();
+    }
+
+    /**
+     * Load the events file
+     */
+    protected function loadEvents() {
+        include APP_DIR . '/app/events.php';
     }
 
 }
