@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------------------------------
 // Application constants
 //------------------------------------------------------------------------------------------------------
-define('APP_ID', 'myapp');
+define('APP_ID', getenv('APP_ID')? : 'myapp');
 define('APP_ENV', getenv('APP_ENV')? : 'development');
 define('APP_DIR', strtr(__DIR__, '\\', '/'));
 define('HTMLPURIFIER_PREFIX', APP_DIR . '/lib');
