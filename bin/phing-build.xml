@@ -249,5 +249,77 @@
             </fileset>
         </phplint>
     </target>
+    
+    
+    <!-- ============================================  -->
+    <!-- Target: git-deploy-staging                    --> 
+    <!-- ============================================  -->
+    <target name="git-deploy-staging" depends="php-lint">
+        <tstamp>
+            <format property="app.deploy.ts" pattern="%Y%m%d%H%M%S"/>
+        </tstamp>
+        
+        <echo msg="Copying files to '${app.staging.host}:${app.staging.path}'" />
+        
+        <scp 
+            port="${app.staging.port}"
+            username="${app.staging.user}"
+            host="${app.staging.host}"
+            pubkeyfile="${app.staging.pub_key}" 
+            privkeyfile="${app.staging.pvt_key}" 
+            todir="${app.staging.path}"
+        >
+            <fileset dir="${app.dir}\bin">
+                <include name="git-staging.sh" />
+            </fileset>
+        </scp>
+        
+        <ssh 
+            port="${app.staging.port}"
+            username="${app.staging.user}"
+            host="${app.staging.host}"
+            pubkeyfile="${app.staging.pub_key}" 
+            privkeyfile="${app.staging.pvt_key}" 
+            command="cd ${app.staging.path}; chmod +x git-staging.sh; /bin/bash git-staging.sh ${app.deploy.ts} ${app.id}" />
+        
+        <echo msg="Deploy for STAGING (GIT) finished" />
+    </target>
+    
+    
+    <!-- ============================================  -->
+    <!-- Target: git-deploy-production                 --> 
+    <!-- ============================================  -->
+    <target name="git-deploy-production" depends="php-lint">
+        <tstamp>
+            <format property="app.deploy.ts" pattern="%Y%m%d%H%M%S"/>
+        </tstamp>
+        
+        <echo msg="Copying files to '${app.production.host}:${app.production.path}'" />
+        
+        <scp 
+            port="${app.production.port}"
+            username="${app.production.user}"
+            host="${app.production.host}"
+            pubkeyfile="${app.production.pub_key}" 
+            privkeyfile="${app.production.pvt_key}" 
+            todir="${app.production.path}"
+        >
+            <fileset dir="${app.dir}\bin">
+                <include name="git-production.sh" />
+            </fileset>
+        </scp>
+        
+        <ssh 
+            port="${app.production.port}"
+            username="${app.production.user}"
+            host="${app.production.host}"
+            pubkeyfile="${app.production.pub_key}" 
+            privkeyfile="${app.production.pvt_key}" 
+            command="cd ${app.production.path}; chmod +x git-production.sh; /bin/bash git-production.sh ${app.deploy.ts} ${app.id}" />
+        
+        <echo msg="Deploy for PRODUCTION (GIT) finished" />
+    </target>
+    
+    
 
 </project>

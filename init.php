@@ -12,6 +12,12 @@ define('ESSENCE_DEFAULT_PROVIDERS', ESSENCE_LIB . 'providers.php');
 $tmp = strtr(sys_get_temp_dir(), '\\', '/');
 $lib = APP_DIR . '/lib';
 
+$temp = sprintf('%s/%s', $tmp, APP_ID);
+
+if (!file_exists($temp)) {
+    @mkdir($temp, 0775, true);
+}
+
 //------------------------------------------------------------------------------------------------------
 // PHP configuration
 //------------------------------------------------------------------------------------------------------

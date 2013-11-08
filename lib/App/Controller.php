@@ -2,8 +2,8 @@
 
 namespace App;
 
+use App\Response\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class Controller {
@@ -67,7 +67,7 @@ class Controller {
      * Send a JSON response
      * @param mixed $data
      * @param int $status
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return \App\Response\JsonResponse
      */
     public function json($data = null, $status = 200) {
         $response = new JsonResponse($data, $status);
@@ -117,12 +117,18 @@ class Controller {
      * @return string
      */
     public function view($file, $out = null, $merge = false) {
-        $context    = is_array($out) ? $merge ? array_merge($this->out, $out) : $out  : $this->out;
-        $prefix     = $this->container->helper->displayPrefix();
-        $file       = explode('/', $file);
-        $pos        = count($file) - 1;
-        $file[$pos] = $prefix . $file[$pos];
-        return $this->container->twig->render(implode('/', $file), $context);
+        $context = is_array($out) ? $merge ? array_merge($this->out, $out) : $out  : $this->out;
+        $config  = $this->container->config['template'];
+
+        if ($config['inject_prefix']) {
+            $prefix     = $this->container->helper->displayPrefix();
+            $file       = explode('/', $file);
+            $pos        = count($file) - 1;
+            $file[$pos] = $prefix . $file[$pos];
+            $file       = implode('/', $file);
+        }
+
+        return $this->container->twig->render($file, $context);
     }
 
     /**
@@ -166,7 +172,7 @@ class Controller {
             $r = $this->container->request;
         }
 
-        return $r->query->get($key, $r->request->get($key, $r->files->get($key, $r->attributes->get($key, $default))));
+        return $r->get($key, $r->files->get($key, $default));
     }
 
 }

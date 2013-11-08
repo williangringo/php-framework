@@ -21,7 +21,7 @@ $container->params['app'] = [
     'id'     => APP_ID,
     'env'    => APP_ENV,
     'dir'    => APP_DIR,
-    'tmp'    => $tmp,
+    'tmp'    => $temp,
     'locale' => ''
 ];
 
@@ -224,7 +224,7 @@ $container->set('cache', function() use ($container) {
 // Array
 // See the /config folder
 //------------------------------------------------------------------------------------------------------
-$container->set('config', function() use ($tmp) {
+$container->set('config', function() use ($container) {
     return include sprintf('%s/config/%s.php', APP_DIR, APP_ENV);
 });
 

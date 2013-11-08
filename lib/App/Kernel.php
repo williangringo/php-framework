@@ -7,9 +7,9 @@ use App\Event\KernelAfter;
 use App\Event\KernelRoute;
 use App\Exception\NotFound;
 use App\Event\KernelBefore;
+use App\Response\JsonResponse;
 use App\Exception\InvalidResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class Kernel {
 

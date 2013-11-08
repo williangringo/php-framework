@@ -40,14 +40,15 @@ class Helper {
      * @return string
      */
     public function displayPrefix() {
-        $m = $this->container->mobile;
+        $cfg = $this->container->config['template']['prefix'];
+        $m   = $this->container->mobile;
 
         if ($m->isTablet()) {
-            return 't.';
+            return $cfg['tablet'];
         } elseif ($m->isMobile() && !$m->isTablet()) {
-            return 'm.';
+            return $cfg['mobile'];
         } else {
-            return '';
+            return $cfg['desktop'];
         }
     }
 

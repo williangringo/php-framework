@@ -1,26 +1,20 @@
 <?php
 
-$temp = sprintf('%s/%s', $tmp, APP_ID);
-
-if (!file_exists($temp)) {
-    @mkdir($temp, 0775, true);
-}
-
 return [
-    'app'     => [
+    'app'      => [
         'id'      => APP_ID,
-        'temp'    => $temp,
+        'temp'    => $container->params['app']['tmp'],
         'cpanels' => ['admin'],
         // Generate a new salt at: https://www.grc.com/passwords.htm
         'salt'    => 'oChmYEsPJM2FB6sdRhWKcyot49uxpzrAkmXxt5dhiufmtGr0Oo5jhA9Sl7gAm9F'
     ],
-    'cache'   => [
+    'cache'    => [
         'apc'      => [
             'ttl'       => 3600,
             'namespace' => APP_ID
         ],
         'file'     => [
-            'path' => $temp
+            'path' => $container->params['app']['tmp']
         ],
         'memcache' => [
             'servers' => [
@@ -33,7 +27,7 @@ return [
             ]
         ]
     ],
-    'db'      => [
+    'db'       => [
         'default' => [
             'driver'    => 'pgsql',
             'host'      => 'localhost',
@@ -44,21 +38,32 @@ return [
             'collation' => 'utf8_general_ci'
         ]
     ],
-    'log'     => [
+    'log'      => [
         'level' => Monolog\Logger::NOTICE
     ],
-    'mongo'   => [
+    'mongo'    => [
         'dsn' => 'mongodb://localhost:27017/test'
     ],
-    'session' => [
+    'session'  => [
         'options' => [
             'name' => 'APPSID'
         ]
     ],
-    'twig'    => [
+    'template' => [
+        'inject_prefix' => true,
+        'prefix'        => [
+            'mobile'  => 'm.',
+            'tablet'  => 't.',
+            'desktop' => ''
+        ]
+    ],
+    'trans'    => [
+        'default' => 'pt_BR'
+    ],
+    'twig'     => [
         'options' => [
-            'debug'            => true,
-            'cache'            => false,
+            'debug'            => false,
+            'cache'            => $container->params['app']['tmp'],
             'auto_reload'      => true,
             'strict_variables' => false
         ],
