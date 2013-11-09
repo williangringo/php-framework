@@ -63,6 +63,7 @@ $loader->registerNamespaces([
     'App'               => $lib,
     'AppModules'        => $lib,
     'Aura'              => $lib,
+    'Authority'         => $lib,
     'Browser'           => $lib,
     'CalendR'           => $lib,
     'Carbon'            => $lib,
