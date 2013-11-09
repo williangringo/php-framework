@@ -86,7 +86,7 @@ class Kernel {
 
             $response = $controller->$action($this->container);
 
-            if (!($response instanceof Response)) {
+            if ($response !== -1 && !($response instanceof Response)) {
                 $this->container->log->addError("You must send an instance of a Response object");
                 throw new InvalidResponse('Invalid response');
             }
@@ -94,7 +94,9 @@ class Kernel {
             $evtKa = new KernelAfter($route, $controller, $response);
             $this->container->events->dispatch('kernel.after', $evtKa);
 
-            $response->send();
+            if ($response !== -1) {
+                $response->send();
+            }
         } catch (NotFound $ex) {
             $this->handleNotFound($ex);
         } catch (\Exception $ex) {

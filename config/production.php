@@ -38,6 +38,12 @@ return [
             'collation' => 'utf8_general_ci'
         ]
     ],
+    'dmi'      => [
+        'enabled' => false,
+        'users'   => [
+            'admin' => 'admin'
+        ]
+    ],
     'log'      => [
         'level' => Monolog\Logger::ERROR
     ],
